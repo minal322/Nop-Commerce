@@ -1,18 +1,8 @@
-import pytest
-from selenium import webdriver
-from selenium.webdriver.common.by import By
 from datetime import datetime
-import pytest
 from pages.homepage import HomePage
-from pages.register import RegisterPage
-from pages.accountSuccess import  AccountSuccessPage
+from test_cases.BaseTest import BaseTest
 
-@pytest.mark.usefixtures("setup_and_teardown")
-class TestRegister:
-
-    def generate_random_email(self):
-        time_stamp = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-        return f'patilminal{time_stamp}@gmail.com'
+class TestRegister(BaseTest):
 
     def test_register_with_mandatory_valid_credentials(self):
         homepage_obj = HomePage(self.driver)

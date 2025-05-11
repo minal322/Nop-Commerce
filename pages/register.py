@@ -1,9 +1,8 @@
-from jinja2.lexer import ignore_if_empty
-from selenium.webdriver.common.by import By
 from pages.accountSuccess import AccountSuccessPage
+from pages.BasePage import BasePage
 
 
-class RegisterPage:
+class RegisterPage(BasePage):
     def __init__(self,driver):
         self.driver = driver
 
@@ -26,44 +25,32 @@ class RegisterPage:
     password_warning_xpath = "//input[@id='input-password']/following-sibling::div"
 
     def enter_firstname(self, firstname):
-        self.driver.find_element(By.ID, self.firstname_field_id).click()
-        self.driver.find_element(By.ID, self.firstname_field_id).clear()
-        self.driver.find_element(By.ID, self.firstname_field_id).send_keys(firstname)
+        self.Type(firstname,"firstname_field_id",self.firstname_field_id)
 
     def enter_lastname(self, lastname):
-        self.driver.find_element(By.ID, self.lastname_field_id).click()
-        self.driver.find_element(By.ID, self.lastname_field_id).clear()
-        self.driver.find_element(By.ID, self.lastname_field_id).send_keys(lastname)
+        self.Type(lastname, "lastname_field_id", self.lastname_field_id)
 
     def enter_email_address(self, email):
-        self.driver.find_element(By.ID, self.email_field_id).click()
-        self.driver.find_element(By.ID, self.email_field_id).clear()
-        self.driver.find_element(By.ID, self.email_field_id).send_keys(email)
+        self.Type(email,"email_field_id", self.email_field_id)
 
     def enter_telephone(self, telephone):
-        self.driver.find_element(By.ID, self.telephone_field_id).click()
-        self.driver.find_element(By.ID, self.telephone_field_id).clear()
-        self.driver.find_element(By.ID, self.telephone_field_id).send_keys(telephone)
+        self.Type(telephone,"telephone_field_id", self.telephone_field_id)
 
     def enter_password(self, password):
-        self.driver.find_element(By.ID, self.password_field_id).click()
-        self.driver.find_element(By.ID, self.password_field_id).clear()
-        self.driver.find_element(By.ID, self.password_field_id).send_keys(password)
-        
+        self.Type(password,"password_field_id", self.password_field_id)
+
     def enter_confirm(self, confirm_password):
-        self.driver.find_element(By.ID, self.confirm_password_field_id).click()
-        self.driver.find_element(By.ID, self.confirm_password_field_id).clear()
-        self.driver.find_element(By.ID, self.confirm_password_field_id).send_keys(confirm_password)
+        self.Type(confirm_password, "confirm_password_field_id", self.confirm_password_field_id)
 
     def select_agreement_checkbox_option(self):
-        self.driver.find_element(By.NAME, self.agreement_option_name).click()
+        self.element_click("agreement_option_name",self.agreement_option_name)
 
     def click_on_continue_button(self):
-        self.driver.find_element(By.XPATH, self.continue_button_xpath).click()
+        self.element_click("continue_button_xpath",self.continue_button_xpath)
         return AccountSuccessPage(self.driver)
 
     def select_news_radio_button(self):
-        self.driver.find_element(By.XPATH, self.newsletter_radio_option_xpath).click()
+        self.element_click("newsletter_radio_option_xpath",self.newsletter_radio_option_xpath)
 
     def register_an_account(self,firstname,lastname,email,telephone,password,confirm_password,yes_newsletter,yes_privacy):
         self.enter_firstname(firstname)
@@ -82,25 +69,25 @@ class RegisterPage:
         return self.click_on_continue_button()
 
     def retrieve_duplicate_warning_message(self):
-        return self.driver.find_element(By.XPATH, self.warning_message_duplicate_email_xpath).text
+        return self.element_text_fetch("warning_message_duplicate_email_xpath",self.warning_message_duplicate_email_xpath)
 
     def retrieve_privacy_policy_warning_message(self):
-        return self.driver.find_element(By.XPATH, self.privacy_policy_warning_xpath).text
+        return self.element_text_fetch("privacy_policy_warning_xpath", self.privacy_policy_warning_xpath)
 
     def retrieve_firstname_warning_message(self):
-        return  self.driver.find_element(By.XPATH, self.first_name_warning_xpath).text
+        return self.element_text_fetch("first_name_warning_xpath",self.first_name_warning_xpath)
 
     def retrieve_lastname_warning_message(self):
-        return self.driver.find_element(By.XPATH, self.last_name_warning_xpath).text
+        return self.element_text_fetch("last_name_warning_xpath ",self.last_name_warning_xpath)
 
     def retrieve_email_warning_message(self):
-        return self.driver.find_element(By.XPATH, self.email_warning_xpath).text
+        return self.element_text_fetch("email_warning_xpath",self.email_warning_xpath)
 
     def retrieve_telephone_warning_message(self):
-        return self.driver.find_element(By.XPATH, self.telephone_warning_xpath).text
+        return self.element_text_fetch("telephone_warning_xpath",self.telephone_warning_xpath)
 
     def retrieve_password_warning_message(self):
-        return self.driver.find_element(By.XPATH, self.password_warning_xpath).text
+        return self.element_text_fetch("password_warning_xpath", self.password_warning_xpath)
 
     def verify_all_warnings(self,expected_policy_message,expected_firstname_warn_message,expected_lastname_warn_message,
                             expected_email_warn_message,expected_telephone_warn_message,expected_password_warn_message):

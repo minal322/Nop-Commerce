@@ -16,105 +16,40 @@ class TestRegister:
 
     def test_register_with_mandatory_valid_credentials(self):
         homepage_obj = HomePage(self.driver)
-        homepage_obj.click_on_my_account_drop_menu()
-        homepage_obj.click_on_register_drop_menu()
-
-        register_obj = RegisterPage(self.driver)
-        register_obj.enter_firstname("dimple")
-        register_obj.enter_lastname("Kukreja")
-        register_obj.enter_email_address(self.generate_random_email())
-        register_obj.enter_telephone("9874561230")
-        register_obj.enter_password("123456")
-
-        register_obj.enter_confirm("123456")
-        self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        register_obj.select_agreement_checkbox_option()
-        register_obj.click_on_continue_button()
-
+        register_obj= homepage_obj.navigate_to_register_page()
+        acc_success_obj = register_obj.register_an_account("dimple","Kukreja",self.generate_random_email(),
+                                                           "9874561230","123456","123456",False,"select")
         expected_text = "Your Account Has Been Created!"
-        acc_success_obj = AccountSuccessPage(self.driver)
         assert acc_success_obj.retrieve_account_creation_message().__eq__(expected_text)
-
-
 
     def test_register_with_all_mandatory_valid_credentials(self):
         homepage_obj = HomePage(self.driver)
-        homepage_obj.click_on_my_account_drop_menu()
-        homepage_obj.click_on_register_drop_menu()
-
-        register_obj = RegisterPage(self.driver)
-        register_obj.enter_firstname("dimple")
-        register_obj.enter_lastname("Kukreja")
-        register_obj.enter_email_address(self.generate_random_email())
-        register_obj.enter_telephone("9874561230")
-        register_obj.enter_password("123456")
-        register_obj.enter_confirm("123456")
-        register_obj.select_agreement_checkbox_option()
-        #optional fields
-        register_obj.select_news_radio_button()
-        register_obj.click_on_continue_button()
-
+        register_obj= homepage_obj.navigate_to_register_page()
+        acc_success_obj = register_obj.register_an_account("dimple","Kukreja",self.generate_random_email(),
+                                                           "9874561230","123456","123456",True,"select")
         expected_text = "Your Account Has Been Created!"
-        acc_success_obj = AccountSuccessPage(self.driver)
         assert acc_success_obj.retrieve_account_creation_message().__eq__(expected_text)
-
 
     def test_register_with_already_registered_email(self):
         homepage_obj = HomePage(self.driver)
-        homepage_obj.click_on_my_account_drop_menu()
-        homepage_obj.click_on_register_drop_menu()
-
-        register_obj = RegisterPage(self.driver)
-        register_obj.enter_firstname("Minal")
-        register_obj.enter_lastname("Patil")
-        register_obj.enter_email_address("patilminal322@gmail.com")
-        register_obj.enter_telephone("9874561230")
-        register_obj.enter_password("123456")
-        register_obj.enter_confirm("123456")
-        register_obj.select_agreement_checkbox_option()
-        register_obj.select_news_radio_button()
-        register_obj.click_on_continue_button()
-
+        register_obj= homepage_obj.navigate_to_register_page()
+        register_obj.register_an_account("Minal", "Patil", "patilminal322@gmail.com",
+                                                           "9874561230", "123456", "123456", True, "select")
         expected_text = "Warning: E-Mail Address is already registered!"
         assert register_obj.retrieve_duplicate_warning_message().__eq__(expected_text)
 
-
-
     def test_register_without_entering_any_fields(self):
         homepage_obj = HomePage(self.driver)
-        homepage_obj.click_on_my_account_drop_menu()
-        homepage_obj.click_on_register_drop_menu()
-
-        register_obj = RegisterPage(self.driver)
-        register_obj.enter_firstname("")
-        register_obj.enter_lastname("")
-        register_obj.enter_email_address("")
-        register_obj.enter_telephone("")
-        register_obj.enter_password("")
-        register_obj.enter_confirm("")
-        register_obj.select_news_radio_button()
-        register_obj.click_on_continue_button()
+        register_obj= homepage_obj.navigate_to_register_page()
+        register_obj.register_an_account("", "", "",
+                                         "", "", "", False, "")
 
         expected_policy_message = "Warning: You must agree to the Privacy Policy!"
-        assert register_obj.retrieve_privacy_policy_warning_message().__eq__(
-            expected_policy_message)
-
         expected_firstname_warn_message = "First Name must be between 1 and 32 characters!"
-        assert register_obj.retrieve_firstname_warning_message().__eq__(
-            expected_firstname_warn_message)
-
         expected_lastname_warn_message = "Last Name must be between 1 and 32 characters!"
-        assert register_obj.retrieve_lastname_warning_message().__eq__(
-            expected_lastname_warn_message)
-
         expected_email_warn_message = "E-Mail Address does not appear to be valid!"
-        assert register_obj.retrieve_email_warning_message().__eq__(
-            expected_email_warn_message)
-
         expected_telephone_warn_message = "Telephone must be between 3 and 32 characters!"
-        assert register_obj.retrieve_telephone_warning_message().__eq__(
-            expected_telephone_warn_message)
-
         expected_password_warn_message = "Password must be between 4 and 20 characters!"
-        assert register_obj.retrieve_password_warning_message().__eq__(
-            expected_password_warn_message)
+
+        assert register_obj.verify_all_warnings(expected_policy_message,expected_firstname_warn_message,expected_lastname_warn_message,
+                            expected_email_warn_message,expected_telephone_warn_message,expected_password_warn_message)

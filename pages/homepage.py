@@ -1,4 +1,8 @@
 from selenium.webdriver.common.by import By
+
+from pages.login import LoginPage
+from pages.register import RegisterPage
+from pages.search import SearchPage
 from selenium import webdriver
 # 3:30:00 session
 class HomePage:
@@ -18,12 +22,28 @@ class HomePage:
 
     def click_on_search_button(self):
         self.driver.find_element(By.XPATH,self.search_button_xpath).click()
-
+        return SearchPage(self.driver)
     def click_on_my_account_drop_menu(self):
         self.driver.find_element(By.XPATH, self.my_account_drop_menu_xpath).click()
 
     def click_on_register_drop_menu(self):
         self.driver.find_element(By.LINK_TEXT, self.register_option_linktext).click()
+        return RegisterPage(self.driver)
 
     def select_login_option(self):
         self.driver.find_element(By.LINK_TEXT,self.login_option_linktext).click()
+        return LoginPage(self.driver)
+
+    def search_for_a_product(self,product_name):
+        self.enter_product_into_search_box_field(product_name)
+        self.click_on_search_button()
+        return SearchPage(self.driver)
+
+    def navigate_to_login_page(self):
+        self.click_on_my_account_drop_menu()
+        return self.select_login_option()
+
+    def navigate_to_register_page(self):
+        self.click_on_my_account_drop_menu()
+        return self.click_on_register_drop_menu()
+

@@ -1,5 +1,5 @@
 from selenium.webdriver.common.by import By
-
+from pages.account import AccountPage
 
 class LoginPage:
     def __init__(self,driver):
@@ -22,6 +22,12 @@ class LoginPage:
 
     def click_on_login_button(self):
         self.driver.find_element(By.XPATH, self.login_button_xpath).click()
+        return AccountPage(self.driver)
 
     def retrieve_warning_message(self):
         return self.driver.find_element(By.XPATH,self.warning_message_xpath).text
+
+    def do_login(self,email,password):
+        self.enter_email_address(email)
+        self.enter_password(password)
+        return self.click_on_login_button()

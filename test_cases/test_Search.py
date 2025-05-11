@@ -1,9 +1,8 @@
 
 from pages.homepage import HomePage
-import pytest
+from test_cases.BaseTest import BaseTest
 
-@pytest.mark.usefixtures("setup_and_teardown")
-class TestSearch:
+class TestSearch(BaseTest):
     def test_search_for_a_valid_product(self):
         homepage_obj = HomePage(self.driver)
         search_obj= homepage_obj.search_for_a_product("HP")

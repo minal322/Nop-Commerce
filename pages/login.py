@@ -1,9 +1,9 @@
-from selenium.webdriver.common.by import By
 from pages.account import AccountPage
+from pages.BasePage import BasePage
 
-class LoginPage:
+class LoginPage(BasePage):
     def __init__(self,driver):
-        self.driver = driver
+        super().__init__(driver)
 
     email_field_id = "input-email"
     password_field_id = "input-password"
@@ -11,21 +11,17 @@ class LoginPage:
     warning_message_xpath = "//div[contains(@class,'alert alert-danger alert-dismissible')]"
 
     def enter_email_address(self, email):
-        self.driver.find_element(By.ID, self.email_field_id).click()
-        self.driver.find_element(By.ID, self.email_field_id).clear()
-        self.driver.find_element(By.ID, self.email_field_id).send_keys(email)
+        self.Type(email,"email_field_id",self.email_field_id)
 
     def enter_password(self, password):
-        self.driver.find_element(By.ID, self.password_field_id).click()
-        self.driver.find_element(By.ID, self.password_field_id).clear()
-        self.driver.find_element(By.ID, self.password_field_id).send_keys(password)
+        self.Type(password,"password_field_id",self.password_field_id)
 
     def click_on_login_button(self):
-        self.driver.find_element(By.XPATH, self.login_button_xpath).click()
+        self.element_click("login_button_xpath", self.login_button_xpath)
         return AccountPage(self.driver)
 
     def retrieve_warning_message(self):
-        return self.driver.find_element(By.XPATH,self.warning_message_xpath).text
+        return self.element_text_fetch("warning_message_xpath",self.warning_message_xpath)
 
     def do_login(self,email,password):
         self.enter_email_address(email)

@@ -20,7 +20,7 @@ class TestSearch(BaseTest):
         homepage_obj = HomePage(self.driver)
         # click on button
         search_obj = homepage_obj.search_for_a_product("")
-        expected_text = "There is no product that matches the search criteria."
+        expected_text = "There is no product that matches the search criteria.xyz"
         assert search_obj.retrieve_no_product_message().__eq__(expected_text)
 
     
